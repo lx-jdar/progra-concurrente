@@ -3,14 +3,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class App {
-
-    public static List<String> getArguments(String[] args) {
-
-        if (args.length == 0) {
+public class App 
+{
+    public static List<String> getArguments(String[] args) 
+    {
+        if (args.length == 0) 
+        {
             return Arrays.asList("B", "C");
-        } else {
-            switch (args[0]) {
+        } 
+        else 
+        {
+            switch (args[0]) 
+            {
                 case "B":
                     return Arrays.asList("D", "E");
                 case "C":
@@ -23,8 +27,8 @@ public class App {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws Exception 
+    {
         List<String> arguments = getArguments(args);
         List<Process> children = new ArrayList<Process>();
 
@@ -34,18 +38,34 @@ public class App {
         String process = args.length == 0 ? "A" : args[0];
         System.out.println(process + "-> PID: " + pid + " PPID: " + ppid);
 
-        try {
-            for (String arg : arguments) {
-                ProcessBuilder pb = new ProcessBuilder("java", "App.java", arg);
+        try 
+        {
+            for (String arg : arguments) 
+            {
+                ProcessBuilder pb = new ProcessBuilder("java", "App", arg);
                 children.add(pb.inheritIO().start());
             }
 
-            for (Process child : children) {
+            for (Process child : children) 
+            {
                 child.waitFor();
             }
 
-        } catch (IOException e) {
+            if (process.equals("A")) 
+            {
+                Thread.sleep(10000);
+                //System.out.println("Waiting");
+            }
+
+        } 
+        catch (IOException e) 
+        {
             e.printStackTrace();
+        } 
+        catch (Exception expn) 
+        {  
+            // catching the exception  
+            expn.printStackTrace();  
         }
     }
 }
