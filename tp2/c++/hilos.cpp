@@ -3,7 +3,6 @@
 #include<string>
 #include<vector>
 #include<time.h>
-#include<Windows.h>
 #define TAM 5
 
 #define LIM_INF -32
@@ -49,7 +48,7 @@ int main()
     {
         hilos.push_back(std::thread(sumarFila,matrizC_concurrente,matrizA,matrizB,contHilosCreados));
     }
-    std::this_thread::sleep_for(std::chrono::seconds(15));
+    std::this_thread::sleep_for(std::chrono::seconds(10));
     for( contHilosCreados=INICIO_FILA; contHilosCreados<TAM; contHilosCreados++ )
     {
         hilos[contHilosCreados].join();
@@ -66,11 +65,13 @@ int main()
 void llenar_matriz(int mat[][TAM],int limInf, int limSup)
 {
     int fila,columna;
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+    srand(time(NULL));
     for(fila=INICIO_FILA; fila<TAM; fila++)
     {
       for(columna=INICIO_COLUM; columna<TAM; columna++)
       {
-         mat[fila][columna]=rand()%(2*(limSup)+1)+limInf;
+         mat[fila][columna]=rand()%(2*(limSup+1))+limInf;
       }
     }
 }
