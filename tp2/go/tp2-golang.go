@@ -66,7 +66,7 @@ func sumarConcurrente(matrizA [5][5]int, matrizB [5][5]int, wg *sync.WaitGroup) 
 		go func(pos int, a *[5]int, b *[5]int) { // ejecuta una rutina go. thread liviano
 			defer wg.Done()
 			//fmt.Printf("fila %3d \n", pos)	// logs it's running concurrently
-			for i, _ := range matrizCC[0] {
+			for i, _ := range matrizCC[pos] {
 				matrizCC[pos][i] = a[i] + b[i]
 			}
 		}(f, &matrizA[f], &matrizB[f])
