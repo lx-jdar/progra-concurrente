@@ -27,7 +27,7 @@ func convertirAEntero(cad string, start int, end int, wg *sync.WaitGroup) {
 
 func main() {
 	if len(os.Args) < 1 {
-		fmt.Println("Please, enter the parameter to convert!")
+		fmt.Println("Por favor, proporcione el parametro a cifrar!")
 	}
 	cadena := os.Args[1]
 	password = make([]int, len(cadena))
@@ -40,6 +40,5 @@ func main() {
 	go convertirAEntero(strings.ToUpper(cadena), 4, len(cadena), &wg)
 	wg.Wait()
 
-	fmt.Println("\nHello World!")
-	fmt.Println(password)
+	fmt.Println("\nPalabra Cifrada:", password)
 }
