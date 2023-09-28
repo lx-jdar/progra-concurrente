@@ -5,7 +5,7 @@ FIRST_PROCESS = 'first'
 PROCESS_LIST = 'list'
 
 
-def createProcesses(letter_list, letter = None):
+def create_processes(letter_list, letter = None):
  if letter == None: #Pregunto si es la primera llamada a la funcion para asignar la primera letra
   letter = letter_list.get(FIRST_PROCESS)
 
@@ -16,7 +16,7 @@ def createProcesses(letter_list, letter = None):
    if pid != 0:
     children_pid.append(pid) #Verdadero, quiere decir que se tiene el valor del pid, lo agrego a la lista
    else:
-    createProcesses(letter_list, son_letter) #Falso, mando a crear los procesos hijos de la letra
+    create_processes(letter_list, son_letter) #Falso, mando a crear los procesos hijos de la letra
     return
 
   for child_pid in children_pid:
@@ -27,4 +27,4 @@ def createProcesses(letter_list, letter = None):
 
 if __name__ == '__main__':
  letter_list = {FIRST_PROCESS: 'A',PROCESS_LIST: {'A': ['B', 'C'],'B': ['D', 'E'],'C': ['F'], 'E': ['G', 'H'] }}
- createProcesses(letter_list)
+ create_processes(letter_list)
