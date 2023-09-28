@@ -8,37 +8,72 @@ import (
 )
 
 const (
-	LETRA_A      = 65
-	CANT_THREADS = 2
+	ASCII_START     = 64
+	CANT_THREADS    = 2
+	CHARS_BY_THREAD = 4
+	INIT_VALUE      = 0
 )
+
+type CharPackage struct {
+	offset int
+	chars  string
+}
 
 var password []int
 var mtx sync.Mutex
 
-func convertirAEntero(cad string, start int, end int, wg *sync.WaitGroup) {
+func convertirAEntero(chnl chan CharPackage, wg *sync.WaitGroup) {
 	defer wg.Done()
-	mtx.Lock()
-	for i := start; i < end; i++ {
-		password[i] = int(cad[i]) - LETRA_A + 1
-		// fmt.Printf("Char at %d Index Pos = %c int %d \n", i, cad[i], int(cad[i]))
+
+	for data := range chnl {
+		for idx := INIT_VALUE; idx < len(data.chars); idx++ {
+			mtx.Lock()
+			password[idx+data.offset] = int(data.chars[idx]) - ASCII_START
+			mtx.Unlock()
+		}
 	}
-	mtx.Unlock()
+
 }
 
 func main() {
-	if len(os.Args) < 1 {
-		fmt.Println("Por favor, proporcione el parametro a cifrar!")
-	}
-	cadena := os.Args[1]
+
+	cadena := strings.ToUpper(os.Args[1])
 	password = make([]int, len(cadena))
+	dataT1 := make(chan CharPackage)
+	dataT2 := make(chan CharPackage)
 
 	var wg sync.WaitGroup
-	wg.Add(CANT_THREADS)
-	fmt.Println("Analyzing Parte 1!")
-	go convertirAEntero(strings.ToUpper(cadena), 0, 4, &wg)
-	fmt.Println("Analyzing Parte 2!")
-	go convertirAEntero(strings.ToUpper(cadena), 4, len(cadena), &wg)
-	wg.Wait()
 
-	fmt.Println("\nPalabra Cifrada:", password)
+	// creo los threads que tratan los caracteres
+	wg.Add(CANT_THREADS)
+	go convertirAEntero(dataT1, &wg)
+	go convertirAEntero(dataT2, &wg)
+
+	cycles := len(cadena) / CHARS_BY_THREAD
+	if len(cadena)%CHARS_BY_THREAD != INIT_VALUE {
+		cycles++
+	}
+	start, offset := INIT_VALUE, CHARS_BY_THREAD
+	for i := INIT_VALUE; i < cycles; i++ {
+		// la logica es delegar de a 4 caracteres a los threads
+		if i%2 == INIT_VALUE {
+			dataT1 <- CharPackage{start, cadena[start:offset]}
+		} else {
+			dataT2 <- CharPackage{start, cadena[start:offset]}
+		}
+		// determinos los sig. 4 chars
+		start += CHARS_BY_THREAD
+		if offset+CHARS_BY_THREAD < len(cadena) {
+			offset += CHARS_BY_THREAD
+		} else {
+			offset = len(cadena)
+		}
+	}
+
+	close(dataT1)
+	close(dataT2)
+
+	wg.Wait()
+	fmt.Println("Cadena Cifrada: ", cadena)
+	fmt.Println("Cifrado: ", password)
 }
