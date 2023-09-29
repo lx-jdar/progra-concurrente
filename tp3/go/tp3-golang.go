@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 	"sync"
 )
@@ -12,6 +13,8 @@ const (
 	CANT_THREADS    = 2
 	CHARS_BY_THREAD = 4
 	INIT_VALUE      = 0
+	WORKER_A        = "A"
+	WORKER_B        = "B"
 )
 
 type CharPackage struct {
@@ -26,20 +29,47 @@ var mtx sync.Mutex
 func convertirAEntero(chnl chan CharPackage, wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	for data := range chnl {
-		fmt.Printf("Thread %s tratando cad : %s\n", data.threadID, data.chars)
-		for idx := INIT_VALUE; idx < len(data.chars); idx++ {
-			mtx.Lock()
-			password[idx+data.offset] = int(data.chars[idx]) - ASCII_START
-			mtx.Unlock()
+	data := <-chnl
+	cadena := data.chars
+	charSize := len(cadena)
+	cycles := charSize / CHARS_BY_THREAD
+	if charSize%CHARS_BY_THREAD > 0 {
+		cycles++
+	}
+	for cycle := 0; cycle < cycles; cycle++ {
+		mtx.Lock()
+		startIdx := cycle * CHARS_BY_THREAD
+		endIdx := startIdx + CHARS_BY_THREAD
+
+		if endIdx > charSize {
+			endIdx = charSize
 		}
+		fmt.Printf("Worker%s procesando %s\n", data.threadID, cadena[startIdx:endIdx])
+		for idx := startIdx; idx < endIdx; idx++ {
+			password[idx+data.offset] = int(data.chars[idx]) - ASCII_START
+		}
+		mtx.Unlock()
 	}
 
 }
 
+func displayError() {
+	fmt.Println("Use: go run tp3-golang.go WordToCypher")
+	fmt.Println("[WordToCypher] debe ser al menos una letra del Abecedario A-Z")
+	panic("Programa tp3-golang.go mal REALIZADO!")
+}
+
 func main() {
 
+	if len(os.Args) < 2 {
+		displayError()
+	}
 	cadena := strings.ToUpper(os.Args[1])
+	matched, _ := regexp.MatchString(`^[A-Z]+$`, cadena)
+	if !matched {
+		displayError()
+	}
+
 	password = make([]int, len(cadena))
 	dataT1 := make(chan CharPackage)
 	dataT2 := make(chan CharPackage)
@@ -51,40 +81,18 @@ func main() {
 	go convertirAEntero(dataT1, &wg)
 	go convertirAEntero(dataT2, &wg)
 
-	cycles := len(cadena) / CHARS_BY_THREAD
-	if len(cadena) == CHARS_BY_THREAD {
-		cycles = 0
-	}
-	start, offset := INIT_VALUE, CHARS_BY_THREAD
-	for i := INIT_VALUE; i < cycles; i++ {
-		// la logica es delegar de a 4 caracteres a los threads
-		if i%2 == INIT_VALUE {
-			dataT1 <- CharPackage{"A", start, cadena[start:offset]}
-		} else {
-			dataT2 <- CharPackage{"B", start, cadena[start:offset]}
-		}
-		// determinos los sig. 4 chars
-		start += CHARS_BY_THREAD
-		offset += CHARS_BY_THREAD
-
-	}
-
-	if offset > len(cadena) {
-		offset = len(cadena)
-	}
-	for idx := start; idx < len(cadena); idx++ {
-		if idx%2 != INIT_VALUE {
-			dataT1 <- CharPackage{"A", idx, string(cadena[idx])}
-		} else {
-			dataT2 <- CharPackage{"B", idx, string(cadena[idx])}
-		}
-	}
-	//fmt.Println(start, offset, cadena[start:offset])
+	endChars := len(cadena)
+	cantChars := endChars / 2
+	fmt.Println("######## Distribucion de cadenas ########")
+	fmt.Printf("Worker%s: %s\n", WORKER_A, string(cadena[INIT_VALUE:cantChars]))
+	fmt.Printf("Worker%s: %s\n\n", WORKER_B, string(cadena[cantChars:endChars]))
+	dataT1 <- CharPackage{WORKER_A, INIT_VALUE, string(cadena[INIT_VALUE:cantChars])}
+	dataT2 <- CharPackage{WORKER_B, cantChars, string(cadena[cantChars:endChars])}
 
 	close(dataT1)
 	close(dataT2)
 
 	wg.Wait()
-	fmt.Println("Cadena Cifrada: ", cadena)
+	fmt.Println("\nCadena Cifrada: ", cadena)
 	fmt.Println("Cifrado: ", password)
 }
