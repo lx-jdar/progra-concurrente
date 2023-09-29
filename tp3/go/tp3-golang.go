@@ -37,7 +37,6 @@ func convertirAEntero(chnl chan CharPackage, wg *sync.WaitGroup) {
 		cycles++
 	}
 	for cycle := 0; cycle < cycles; cycle++ {
-		mtx.Lock()
 		startIdx := cycle * CHARS_BY_THREAD
 		endIdx := startIdx + CHARS_BY_THREAD
 
@@ -46,11 +45,11 @@ func convertirAEntero(chnl chan CharPackage, wg *sync.WaitGroup) {
 		}
 		fmt.Printf("Worker%s procesando %s\n", data.threadID, cadena[startIdx:endIdx])
 		for idx := startIdx; idx < endIdx; idx++ {
+			mtx.Lock()
 			password[idx+data.offset] = int(data.chars[idx]) - ASCII_START
+			mtx.Unlock()
 		}
-		mtx.Unlock()
 	}
-
 }
 
 func displayError() {
