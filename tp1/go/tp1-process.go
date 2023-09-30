@@ -27,30 +27,28 @@ func fork() (uintptr, error) {
 	return ret, nil
 }
 
-func createProcess(letter string) uintptr {
-	//fmt.Println("This is the process " + letter)
-
-	for i := 0; i < len(nodes[letter]); i++ {
-
-		id, _ := fork()
-		if id == 0 {
-			node := string(nodes[letter][i])
-			fmt.Printf("PID_Child: %d Padre: %d Node: %s\n", os.Getpid(), os.Getppid(), node)
-			if len(nodes[letter]) != 0 {
-				createProcess(node)
-			}
-			time.Sleep(10 * time.Second)
-			return id
-		}
-		time.Sleep(1 * time.Second)
+func createProcesses(letter string) {
+	if letter != "A" {
+		fmt.Printf("PID_Child: %5d Padre: %5d Node: %s\n", os.Getpid(), os.Getppid(), letter)
 	}
-
-	return 1
+	children := make([]uintptr, len(nodes[letter]))
+	var node string
+	for i := 0; i < len(nodes[letter]); i++ {
+		node = string(nodes[letter][i])
+		children[i], _ = fork()
+		if children[i] == 0 {
+			createProcesses(node)
+			return
+		}
+	}
+	for child := range children {
+		syscall.Wait4(int(child), nil, 0, nil)
+	}
+	time.Sleep(10 * time.Second)
+	return
 }
 
 func main() {
-	fmt.Printf("PPID_INIT: %d Padre: %d Node: A\n", os.Getpid(), os.Getppid())
-	if createProcess("A") == 1 {
-		time.Sleep(10 * time.Second)
-	}
+	fmt.Printf("PPID_INIT: %5d Padre: %5d Node: A\n", os.Getpid(), os.Getppid())
+	createProcesses("A")
 }
