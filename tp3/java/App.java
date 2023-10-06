@@ -97,6 +97,7 @@ public class App
       System.out.println("Max: " + max);
       System.out.print("Most Frequent Values: ");
       getMostFrequentValues().forEach((value) -> System.out.print(value + " "));
+      System.out.println();
     }
 
     private ArrayList<Integer> getMostFrequentValues ()
