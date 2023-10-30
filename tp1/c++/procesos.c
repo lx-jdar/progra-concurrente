@@ -5,9 +5,15 @@
 #define NO_INI -1
 #define PROS_CREATED 0
 
-void showPidAndPhaSi(pid_t pid,char name);
+void ShowPidAndPhaSi(pid_t pId,char name);
+
+pid_t CreateProsSi(pid_t pId);
+
+pid_t CreateProsSiNo(pid_t pId,pid_t pId2);
+
 int main()
 {
+  pid_t pIdA=PROS_CREATED;
   pid_t pIdB=NO_INI;
   pid_t pIdC=NO_INI;
   pid_t pIdD=NO_INI;
@@ -16,44 +22,52 @@ int main()
   pid_t pIdG=NO_INI;
   pid_t pIdH=NO_INI;
 
-  showPidAndPhaSi(PROS_CREATED,'A');
-  pIdB=fork();
-  if( pIdB != PROS_CREATED )
-  {
-   pIdC=fork();
-  }
-  if( pIdC == PROS_CREATED )
-  {
-   showPidAndPhaSi(pIdC,'C');
-   pIdF=fork();
-  }
-  showPidAndPhaSi(pIdB,'B');
-  if( pIdB == PROS_CREATED )
-  {
-   pIdE=fork();
-   if( pIdE != PROS_CREATED )
-     pIdD=fork();
-  }
+  ShowPidAndPhaSi(pIdA,'A');
+  
+ 
+  pIdB=CreateProsSi(pIdA);
+  
+  pIdC=CreateProsSiNo(pIdA,pIdB);
+  
+  ShowPidAndPhaSi(pIdC,'C');
+  
+  pIdF=CreateProsSi(pIdC);
 
-  showPidAndPhaSi(pIdE,'E');
+  ShowPidAndPhaSi(pIdB,'B');
 
-  if( pIdE == PROS_CREATED )
-  {
-   pIdG=fork();
-   if( pIdG != PROS_CREATED )
-    pIdH=fork();
-  }
+  pIdE=CreateProsSi(pIdB);
+  
+  pIdD=CreateProsSiNo(pIdB,pIdE);
+  
+  ShowPidAndPhaSi(pIdE,'E');
+  
+  pIdG=CreateProsSi(pIdE);
+  
+  pIdH=CreateProsSiNo(pIdE,pIdG);
+ 
 
-  showPidAndPhaSi(pIdD,'D');
-  showPidAndPhaSi(pIdF,'F');
-  showPidAndPhaSi(pIdG,'G');
-  showPidAndPhaSi(pIdH,'H');
+  ShowPidAndPhaSi(pIdD,'D');
+  ShowPidAndPhaSi(pIdF,'F');
+  ShowPidAndPhaSi(pIdG,'G');
+  ShowPidAndPhaSi(pIdH,'H');
   sleep(15);
   return 0;
 }
 
-void showPidAndPhaSi(pid_t pid,char name)
+void ShowPidAndPhaSi(pid_t pId,char name)
 {
-  if( pid == PROS_CREATED )
+  if( pId == PROS_CREATED )
     printf("Soy el proceso %c PID:%d y su Padre es:%d\n",name,getpid(),getppid());
+}
+pid_t CreateProsSi(pid_t pId)
+{
+    if(pId == PROS_CREATED)
+     return fork();
+    return -1;
+}
+pid_t CreateProsSiNo(pid_t pId,pid_t pId2)
+{
+    if(pId == PROS_CREATED && pId2 != PROS_CREATED)
+      return fork();
+    return -1;
 }
