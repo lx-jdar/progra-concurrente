@@ -31,7 +31,7 @@ class Caballo:
                   self.calcularMov(tablero)
                   return
                 print(self.movimientosPosibles)
-                if '{}{}'.format(new_posX,new_posY) in self.movimientosPosibles and tablero.casillas[new_posX][new_posY]:
+                if '{}{}'.format(new_posX,new_posY) in self.movimientosPosibles:
                         tablero.casillas[new_posX][new_posY]=False
                         self.posX = new_posX
                         self.posY = new_posY
@@ -42,40 +42,36 @@ class Caballo:
         def calcularMov(self,tablero):
                 if(self.posX - 2) >= 0:
                  if(self.posY - 1) >= 0:
-                        self.movimientosPosibles['{}{}'.format(self.posX-2, self.posY-1)]=True
+                        self.movimientosPosibles['{}{}'.format(self.posX-2, self.posY-1)]=tablero.casillas[self.posX-2][self.posY-1]
                  if(self.posY + 1) <= 7:
-                        self.movimientosPosibles['{}{}'.format(self.posX-2, self.posY+1)]=True
+                        self.movimientosPosibles['{}{}'.format(self.posX-2, self.posY+1)]=tablero.casillas[self.posX-2][self.posY+1]
 
                 if(self.posY - 2) >= 0:
                  if(self.posX - 1) >= 0:
-                         self.movimientosPosibles['{}{}'.format(self.posX-1, self.posY-2)]=True 
+                         self.movimientosPosibles['{}{}'.format(self.posX-1, self.posY-2)]=tablero.casillas[self.posX-1][self.posY-2]
                  if(self.posX + 1) <= 7:
-                         self.movimientosPosibles['{}{}'.format(self.posX+1, self.posY-2)]=True
+                         self.movimientosPosibles['{}{}'.format(self.posX+1, self.posY-2)]=tablero.casillas[self.posX+1][self.posY-2]
 
 
                 if(self.posX + 2) <= 7:
                  if(self.posY - 1) >= 0:
-                         self.movimientosPosibles['{}{}'.format(self.posX+2, self.posY-1)]=True
+                         self.movimientosPosibles['{}{}'.format(self.posX+2, self.posY-1)]=tablero.casillas[self.posX+2][self.posY-1]
                  if(self.posY + 1) <= 7:
-                         self.movimientosPosibles['{}{}'.format(self.posX+2, self.posY+1)]=True
+                         self.movimientosPosibles['{}{}'.format(self.posX+2, self.posY+1)]=tablero.casillas[self.posX+2][self.posY+1]
 
                 if(self.posY + 2) <= 7:
                   if(self.posX - 1) >= 0:
-                        self.movimientosPosibles['{}{}'.format(self.posX-1, self.posY+2)]=True
+                        self.movimientosPosibles['{}{}'.format(self.posX-1, self.posY+2)]=tablero.casillas[self.posX-1][self.posY+2]
                   if(self.posX + 1) <= 7:
-                        self.movimientosPosibles['{}{}'.format(self.posX+1, self.posY+2)]=True
+                        self.movimientosPosibles['{}{}'.format(self.posX+1, self.posY+2)]=tablero.casillas[self.posX+1][self.posY+2]
 
      
-        #validar_mov1(self,new_pos, new_posY)
-        #validar_mov2(self,new_pos, new_posY)
-        #validar_mov3(self,new_pos, new_posY)
-        #validar_mov4(self,new_pos, new_posY)
 
 def config_ini():
         img_tablero=pygame.image.load("Imagenes/tablero.png")
         fondo = pygame.transform.scale(img_tablero, (800,600))
 
-        #Color=pygame.Color(70,80,150)
+       
         ventana.blit(fondo,(0,0))
         #for i in range(0,9):
          #   pygame.draw.line(ventana,Color,(i*100,0),(i*100,600),10)
