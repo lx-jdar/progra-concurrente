@@ -26,7 +26,7 @@ class Caballo:
                 if self.posX ==-1 and new_posX>=0 and new_posX<=7 and new_posY>=0 and new_posY<=7:    
                   self.posX = new_posX
                   self.posY = new_posY
-                  ventana.blit(caballo.pieza_caba,(65+caballo.posX*85,caballo.posY*66+42))
+                  ventana.blit(caballo.pieza_caba,(43+caballo.posX*92,caballo.posY*68+38))
                   tablero.casillas[new_posX][new_posY]=False
                   self.calcularMov(tablero)
                   return
@@ -35,7 +35,7 @@ class Caballo:
                         tablero.casillas[new_posX][new_posY]=False
                         self.posX = new_posX
                         self.posY = new_posY
-                        ventana.blit(caballo.pieza_caba,(65+caballo.posX*85,caballo.posY*66+42))
+                        ventana.blit(caballo.pieza_caba,(43+caballo.posX*92,caballo.posY*68+38))
                 self.movimientosPosibles={}
                 self.calcularMov(tablero)
                  
@@ -68,10 +68,9 @@ class Caballo:
      
 
 def config_ini():
-        img_tablero=pygame.image.load("Imagenes/tablero.png")
+        img_tablero=pygame.image.load("Imagenes/tablero2.png")        
         fondo = pygame.transform.scale(img_tablero, (800,600))
 
-       
         ventana.blit(fondo,(0,0))
         #for i in range(0,9):
          #   pygame.draw.line(ventana,Color,(i*100,0),(i*100,600),10)
@@ -106,7 +105,7 @@ while True:
                 posX,posY=pygame.mouse.get_pos()
                 print(posX)
                 print(posY)
-                caballo.mover(int((posX-55)/85),int((posY-36)/66),tablero)
+                caballo.mover(int((posX-38)/92),int((posY-24)/68),tablero)
           pygame.display.update()
 
 
