@@ -34,8 +34,8 @@ class Caballo:
             self.posX = new_posX
             self.posY = new_posY
             ventana.blit(caballo.pieza_caba,(43+caballo.posX*92,caballo.posY*68+38))
-        self.movimientosPosibles={}
-        self.calcularMov(tablero)
+            self.movimientosPosibles={}
+            self.calcularMov(tablero)
 
     def calcularMov(self,tablero):
         if(self.posX - 2) >= 0:
