@@ -43,7 +43,8 @@ class Tablero:
                      hilos_actua.append(hilo)  
                 for hilo in hilos_actua:
                      hilo.join()
-        
+        def restart(self):
+                self.casillas = np.full((TAM_TABLERO, TAM_TABLERO),True)
                         
 class Caballo:
         img_caballo=pygame.image.load("tp_integrador/Imagenes/caballo.jpg")
@@ -89,6 +90,10 @@ class Caballo:
                    new_posX,new_posY=self.movimientos_deshechos.pop()
                    self.mover(new_posX,new_posY,tablero)
         
+        def restart(self):
+                self.movimientosPosibles={}
+                self.posX = -1
+                self.posY = -1
 ##        def animacion(self,new_posX,new_posY,tablero):
 ##                pos_pixelX_actual=43+self.posX*92;
 ##                pos_pixelY_actual=self.posY*68+38;
@@ -108,7 +113,6 @@ class Caballo:
 ##                        if pos_pixelY_actual<new_pos_pixelY :
 ##                          pos_pixelY_actual+=VELOCIDAD
 ##                          ventana.blit(caballo.pieza_caba,(pos_pixelX_actual,pos_pixelY_actual))
-                
         
         def calcularMov(self,tablero):
                 if(self.posX - 2) >= 0:
@@ -135,6 +139,12 @@ class Caballo:
                         self.movimientosPosibles['{}{}'.format(self.posX-1, self.posY+2)]=tablero.casillas[self.posX-1][self.posY+2]
                   if(self.posX + 1) <= 7:
                         self.movimientosPosibles['{}{}'.format(self.posX+1, self.posY+2)]=tablero.casillas[self.posX+1][self.posY+2]
+                
+                print(self.movimientosPosibles)
+                if True in self.movimientosPosibles.values():
+                 print("El diccionario contiene el valor True")
+                else:
+                 print("El diccionario contiene el valor FALSE- PERDISTE")
 
      
 class ConfigThread(threading.Thread):
@@ -214,6 +224,12 @@ while running:
                  caballo.volver_adelante(tablero)
                 elif evento.key == pygame.K_ESCAPE:
                  sem_init.release()
+                elif evento.key == pygame.K_r:
+                 tablero=Tablero()
+                 caballo= Caballo()
+                 tablero.restart()
+                 caballo.restart()
+                 tablero.actualizar()
           
           pygame.display.update()
           
