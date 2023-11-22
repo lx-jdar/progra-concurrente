@@ -1,5 +1,3 @@
-%%writefile total_ventas.cpp
-
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,19 +35,15 @@ int main(int argc, char* argv[]){
         //
         // Completar código faltante
         //
-        #pragma omp parallel
+        #pragma omp parallel for
+        for (int j = 0; j < DAYS; j++)
         {
-            #pragma omp for
-            for (int i = 0; i < count_suc; i++)
-            {
-
-              for (int j = 0; j < DAYS; j++)
-              {
-                  total+=ventas_x_sucursal[i][j];
-              }
-              printf("\n");
-            }
+            int i = omp_get_thread_num();
+            total+=ventas_x_sucursal[i][j];
         }
+        printf("\n");
+        
+        
         printf("%d\n", total);
     }
     else
