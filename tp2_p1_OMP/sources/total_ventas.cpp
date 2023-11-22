@@ -1,5 +1,3 @@
-%%writefile total_ventas.cpp
-
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,9 +15,6 @@ int main(int argc, char* argv[]){
         int ventas_x_sucursal[count_suc][DAYS];
         int total = 0;
 
-        // Use 4 OpenMP threads
-	    omp_set_num_threads(4);
-
         srand(SEED);
         #pragma omp parallel for
         for (int i = 0; i < count_suc; i++)
@@ -34,6 +29,9 @@ int main(int argc, char* argv[]){
             }
         }
 
+        //
+        // Completar código faltante
+        //
         #pragma omp parallel for
         for (int i = 0; i < count_suc; i++)
         {
@@ -46,9 +44,7 @@ int main(int argc, char* argv[]){
               printf("\n");
             }
         }
-        //
-        // Completar código faltante
-        //
+        
         printf("%d\n", total);
     }
     else
