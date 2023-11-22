@@ -1,3 +1,5 @@
+%%writefile total_ventas.cpp
+
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,35 +18,38 @@ int main(int argc, char* argv[]){
         int total = 0;
 
         srand(SEED);
-        #pragma omp parallel for
         for (int i = 0; i < count_suc; i++)
         {
             for (int j = 0; j < DAYS; j++)
             {
-                #pragma omp critical
-                {
-                  ventas_x_sucursal[i][j] = (rand() % (LIMIT_SUP - LIMIT_INF + 1)) + LIMIT_INF;
-                  total+=ventas_x_sucursal[i][j];
-                }
+                ventas_x_sucursal[i][j] = (rand() % (LIMIT_SUP - LIMIT_INF + 1)) + LIMIT_INF;
             }
         }
 
+        for (int i = 0; i < count_suc; i++)
+        {
+            for (int j = 0; j < DAYS; j++)
+            {
+                printf("%d \t", ventas_x_sucursal[i][j]);
+            }
+            printf("\n");
+        }
         //
         // Completar código faltante
         //
-        #pragma omp parallel for
-        for (int i = 0; i < count_suc; i++)
+        #pragma omp parallel
         {
-            #pragma omp critical
+            #pragma omp for
+            for (int i = 0; i < count_suc; i++)
             {
+
               for (int j = 0; j < DAYS; j++)
               {
-                    printf("%d \t", ventas_x_sucursal[i][j]);
+                  total+=ventas_x_sucursal[i][j];
               }
               printf("\n");
             }
         }
-        
         printf("%d\n", total);
     }
     else
