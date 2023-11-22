@@ -79,8 +79,8 @@ class Caballo:
                         new_posX,new_posY=self.movimientos_anteriores.pop()
                         self.movimientos_deshechos.append((self.posX,self.posY))
                         tablero.casillas[new_posX][new_posY ]=True
-                        new_pos_pixelX=43+new_posX*92;
-                        new_pos_pixelY=new_posY*68+38;
+                        new_pos_pixelX=DESPLAZAMIENTO_X+new_posX*MULTIPLICADOR_X;
+                        new_pos_pixelY=DESPLAZAMIENTO_Y+new_posY*MULTIPLICADOR_Y;
                         self.posX = new_posX
                         self.posY = new_posY
                         tablero.actualizar()
