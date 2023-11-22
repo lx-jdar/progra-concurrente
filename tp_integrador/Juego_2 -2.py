@@ -13,6 +13,8 @@ MULTIPLICADOR_Y  = 68
 ANCHO_CABALLO = 70
 ALTO_CABALLO  = 50
 TAM_TABLERO = 8
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
 # img_tablero=pygame.image.load("tp_integrador/Imagenes/tablero2.png")
 # fondo = pygame.transform.scale(img_tablero, (800,600))
 # img_x=pygame.image.load("tp_integrador/Imagenes/X.png")
@@ -113,32 +115,34 @@ class Caballo:
 ##                        if pos_pixelY_actual<new_pos_pixelY :
 ##                          pos_pixelY_actual+=VELOCIDAD
 ##                          ventana.blit(caballo.pieza_caba,(pos_pixelX_actual,pos_pixelY_actual))
+        def get_key(self,val_x,val_y):
+                return '{}{}'.format(self.posX+val_x, self.posY+val_y)   
         
         def calcularMov(self,tablero):
                 if(self.posX - 2) >= 0:
                  if(self.posY - 1) >= 0:
-                        self.movimientosPosibles['{}{}'.format(self.posX-2, self.posY-1)]=tablero.casillas[self.posX-2][self.posY-1]
+                        self.movimientosPosibles[self.get_key(-2,-1)]=tablero.casillas[self.posX-2][self.posY-1]
                  if(self.posY + 1) <= 7:
-                        self.movimientosPosibles['{}{}'.format(self.posX-2, self.posY+1)]=tablero.casillas[self.posX-2][self.posY+1]
+                        self.movimientosPosibles[self.get_key(-2,1)]=tablero.casillas[self.posX-2][self.posY+1]
 
                 if(self.posY - 2) >= 0:
                  if(self.posX - 1) >= 0:
-                         self.movimientosPosibles['{}{}'.format(self.posX-1, self.posY-2)]=tablero.casillas[self.posX-1][self.posY-2]
+                         self.movimientosPosibles[self.get_key(-1,-2)]=tablero.casillas[self.posX-1][self.posY-2]
                  if(self.posX + 1) <= 7:
-                         self.movimientosPosibles['{}{}'.format(self.posX+1, self.posY-2)]=tablero.casillas[self.posX+1][self.posY-2]
+                         self.movimientosPosibles[self.get_key(1,-2)]=tablero.casillas[self.posX+1][self.posY-2]
 
 
                 if(self.posX + 2) <= 7:
                  if(self.posY - 1) >= 0:
-                         self.movimientosPosibles['{}{}'.format(self.posX+2, self.posY-1)]=tablero.casillas[self.posX+2][self.posY-1]
+                         self.movimientosPosibles[self.get_key(2,-1)]=tablero.casillas[self.posX+2][self.posY-1]
                  if(self.posY + 1) <= 7:
-                         self.movimientosPosibles['{}{}'.format(self.posX+2, self.posY+1)]=tablero.casillas[self.posX+2][self.posY+1]
+                         self.movimientosPosibles[self.get_key(2,1)]=tablero.casillas[self.posX+2][self.posY+1]
 
                 if(self.posY + 2) <= 7:
                   if(self.posX - 1) >= 0:
-                        self.movimientosPosibles['{}{}'.format(self.posX-1, self.posY+2)]=tablero.casillas[self.posX-1][self.posY+2]
+                        self.movimientosPosibles[self.get_key(-1,2)]=tablero.casillas[self.posX-1][self.posY+2]
                   if(self.posX + 1) <= 7:
-                        self.movimientosPosibles['{}{}'.format(self.posX+1, self.posY+2)]=tablero.casillas[self.posX+1][self.posY+2]
+                        self.movimientosPosibles[self.get_key(1,2)]=tablero.casillas[self.posX+1][self.posY+2]
                 
                 print(self.movimientosPosibles)
                 if True in self.movimientosPosibles.values():
@@ -157,36 +161,24 @@ class ConfigThread(threading.Thread):
         global  img_tablero, fondo, img_x, ocupado
         
         img_tablero = pygame.image.load("tp_integrador/Imagenes/tablero2.png")
-        fondo = pygame.transform.scale(img_tablero, (800,600))
+        fondo = pygame.transform.scale(img_tablero, (WINDOW_WIDTH,WINDOW_HEIGHT))
         
         img_x = pygame.image.load("tp_integrador/Imagenes/X.png")
         ocupado = pygame.transform.scale(img_x, (ANCHO_CABALLO,ALTO_CABALLO))
-
-        # sem_init.release()
-        # sem_init.release()
-
-        # Devuelve los recursos
-        # return img_tablero, fondo, img_x, ocupado
     
                       
 def esperar_fin():
         global running
         sem_init.acquire()
         running = False        
-        pygame.event.post(pygame.event.Event(pygame.QUIT))
-        
-        
-# while running:
-#         for evento in pygame.event.get():
-#                 if evento.type == pygame.QUIT or evento.type == pygame.bott:
-                    
+        pygame.event.post(pygame.event.Event(pygame.QUIT))            
                     
 
 def configuracion_inicial():
         global ventana
         pygame.init()
         pygame.display.set_caption("Caballo de Ajedrez")
-        ventana = pygame.display.set_mode((800,600))
+        ventana = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
         thread_config_ini  = ConfigThread()
         thread_config_ini.start()
         thread_config_ini.join()
