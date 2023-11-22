@@ -2,18 +2,46 @@ import pygame
 import random
 import threading
 import time
+import numpy as np 
 
+TAM_TABLERO = 8
+# Set up the window
+WINDOW_WIDTH = 800
+WINDOW_HEIGHT = 600
+MAX_THREADS = 2
+    
+
+class Tablero:
+    TAM_TABLERO = 8
+    casillas = np.full((TAM_TABLERO, TAM_TABLERO),True)
+    __img_tablero = None
+    __img_tablero_rect = None
+
+    def __init__(self):
+        self.__img_tablero = pygame.transform.scale(
+            pygame.image.load("tp_integrador/tablero2.png").convert(), 
+            (self.WINDOW_WIDTH,self.WINDOW_HEIGHT))
+        # Obtengo el rectángulo del objeto anterior
+        self.__img_tablero_rect = self.__img_tablero.get_rect()
+        # Pongo la tablero en el origen de coordenadas
+        self.__img_tablero_rect.move_ip(0,0)
+
+class Caballo:
+    __caballo = None
+    __caballo_rect = None
+
+    def __init__(self):
+        self.__caballo = pygame.transform.scale(
+                pygame.image.load("tp_integrador/caballo.jpg"), (70, 50))
+        self.__caballo_rect = self.__caballo.get_rect()
 
 class TableroAjedrezGame:
 
     __instance = None
 
-    # Set up the window
-    WINDOW_WIDTH = 800
-    WINDOW_HEIGHT = 600
-    MAX_THREADS = 2
-
     __screen = None
+
+    __tablero = None
 
     __img_tablero = None
     __img_tablero_rect = None
@@ -38,17 +66,21 @@ class TableroAjedrezGame:
     def load_config(self):
         # Initialize Pygame
         pygame.init()
-        self.__screen = pygame.display.set_mode((self.WINDOW_WIDTH,self.WINDOW_HEIGHT))
+        self.__screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
         pygame.display.set_caption("Caballo de Ajedrez")
 
-        self.__img_tablero = pygame.image.load("PyGamePractice/btablero2.png").convert()
-        self.__img_tablero = pygame.transform.scale(self.__img_tablero, (self.WINDOW_WIDTH,self.WINDOW_HEIGHT))
+        self.__tablero = Tablero()
+
+        #### Parte del tablero
+        self.__img_tablero = pygame.image.load("tp_integrador/tablero2.png").convert()
+        self.__img_tablero = pygame.transform.scale(self.__img_tablero, (WINDOW_WIDTH,WINDOW_HEIGHT))
         # Obtengo el rectángulo del objeto anterior
         self.__img_tablero_rect = self.__img_tablero.get_rect()
         # Pongo la tablero en el origen de coordenadas
         self.__img_tablero_rect.move_ip(0,0)
+        #### Parte del tablero
 
-        self.__caballo = pygame.image.load("PyGamePractice/caballo.jpg")
+        self.__caballo = pygame.image.load("tp_integrador/caballo.jpg")
         self.__caballo = pygame.transform.scale(self.__caballo, (70, 50))
         self.__caballo_rect = self.__caballo.get_rect()
         #self.__caballo_rect.move_ip(42+1*92,36+1*68)
