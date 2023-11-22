@@ -1,0 +1,19 @@
+Instrucciones del juego "Caballo de Ajedrez"
+
+Objetivo
+
+El objetivo del juego es pasar por todas las casillas de un tablero de ajedrez (8x8) con el caballo. Si no pasas por todas las ubicaciones, pierdes.
+
+Botones
+
+Click izquierdo: Selecciona una casilla a moverte.
+"R": Comienza de nuevo el juego.
+"Z": Deshace un movimiento.
+"Y": Vuelve a realizar un movimiento deshecho.
+"Escape": Sale del juego.
+
+Jugando el juego
+
+1. Haz click en cualquier casilla donde desees moverte con el caballo para iniciar el juego.
+2. Selecciona alguna de las casillas disponibles para que el caballo se mueva (NOTA: El caballo solo puede moverse en forma de L)
+3. Si el caballo no puede moverse a ninguna casilla adyacente, pierdes el juego.
