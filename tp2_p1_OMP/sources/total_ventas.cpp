@@ -32,17 +32,19 @@ int main(int argc, char* argv[]){
             }
             printf("\n");
         }
+
         //
         // Completar código faltante
         //
-        #pragma omp parallel for
+        // Use num de sucursales OpenMP threads
+	      omp_set_num_threads(count_suc);
+        
+        #pragma omp parallel
         for (int j = 0; j < DAYS; j++)
         {
             int i = omp_get_thread_num();
             total+=ventas_x_sucursal[i][j];
-        }
-        printf("\n");
-        
+        }        
         
         printf("%d\n", total);
     }
