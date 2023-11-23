@@ -1,4 +1,4 @@
-# TP INTEGRADOR M4: Juego - Caballo de Ajedrez
+# Proyecto: Caballo de Ajedrez
 
 Se trata de un juego basado en el Ajedrez y, una de sus piezas, el caballo. El juego consiste en intentar recorrer todas las casillas de un tablero de Ajedrez con un caballo, que respeta el movimiento del juego en el cual se basa, y sin repetir casillas. La finalidad de este Software es el entretenimiento.
 
