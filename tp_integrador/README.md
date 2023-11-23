@@ -6,7 +6,7 @@ Se utilizó el lenguaje de programación Python, y el framework Pygame para rend
 
 Para llevar a cabo la gestion de presentación en pantalla, el juego utiliza 8 hilos para la actualización de cada fila del tablero y un hilo que verifica si se ha ganado o perdido el juego. 
 
-Para represnetar los objetos del juego, se lleva a cabo de dos clases, la clase Tablero que tiene la responsabilidad de llevar registro del estado de todas las casillas y de actualizar el tablero y como complemento una clase Caballo en el cual se realiza la logica de mover la pieza caballo y determinar los movimientos posibles que puede hacer dentro del tablero, como siguiente movimiento o retroceder a pasos anteriores para elegir otro camino.
+Para representar los objetos del juego, se lleva a cabo de dos clases, la clase Tablero que tiene la responsabilidad de llevar registro del estado de todas las casillas y de actualizar el tablero y como complemento una clase Caballo en el cual se realiza la logica de mover la pieza caballo y determinar los movimientos posibles que puede hacer dentro del tablero, como siguiente movimiento o retroceder a pasos anteriores para elegir otro camino.
 
 ## Instrucciones del juego "Caballo de Ajedrez"
 
