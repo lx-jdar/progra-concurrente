@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
         // Completar código faltante
         //
         // Use num de sucursales OpenMP threads
-	      omp_set_num_threads(count_suc);
+	    omp_set_num_threads(count_suc);
         
         #pragma omp parallel
         for (int j = 0; j < DAYS; j++)
