@@ -28,6 +28,8 @@ Botones:
 + Selecciona alguna de las casillas disponibles para que el caballo se mueva (NOTA: El caballo solo puede moverse en forma de L)
 + Si el caballo no puede moverse a ninguna casilla adyacente, pierdes el juego.
 
+![](gifs/demo-game.gif)
+
 ### Conclusiones:
 En resumen, podemos decir que al utilizar threads hay que tener en cuenta dos puntos importantes, uno de ellos es la sincronización y comunicación, si no se realiza correctamente, puede llegar a generar errores inesperados, como puede ser que se trabe el juego o se cierre de la nada. 
 
