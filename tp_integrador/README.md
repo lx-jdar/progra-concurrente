@@ -2,7 +2,7 @@
 
 Se trata de un juego basado en el Ajedrez y, una de sus piezas, el caballo. El juego consiste en intentar recorrer todas las casillas de un tablero de Ajedrez con un caballo, que respeta el movimiento del juego en el cual se basa, y sin repetir casillas. La finalidad de este Software es el entretenimiento.
 
-Se utilizó el lenguaje de programación Python, y el framework Pygame para hacer la renderizar la gráfica del juego y detectar los eventos que acciona el jugador. 
+Se utilizó el lenguaje de programación Python, y el framework Pygame para renderizar la gráfica del juego y detectar los eventos que acciona el jugador. 
 
 Para llevar a cabo la gestion de presentación en pantalla, el juego utiliza 8 hilos para la actualización de cada fila del tablero y un hilo que verifica si se ha ganado o perdido el juego. 
 
